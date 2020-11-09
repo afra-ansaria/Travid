@@ -1,0 +1,22 @@
+{
+  "name": "travid",
+  "version": "1.0.0",
+  "description": "1.125 team project",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afra-ansaria/Travid.git"
+  },
+  "keywords": [
+    "Travid"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/afra-ansaria/Travid/issues"
+  },
+  "homepage": "https://github.com/afra-ansaria/Travid#readme"
+}
