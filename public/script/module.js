@@ -73,4 +73,8 @@ var loadLogin = function(){
     target.innerHTML = ui.login;
 };
 
+var defaultModule = function(){
+  target.innerHTML = ui.default;
+};
+
 defaultModule();

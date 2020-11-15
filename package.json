@@ -21,7 +21,8 @@
   "homepage": "https://github.com/afra-ansaria/Travid#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "firebase": "^8.0.2"
+    "firebase": "^8.0.2",
+    "firebaseui": "^4.7.1"
   },
   "devDependencies": {}
 }
