@@ -15,7 +15,7 @@ function create() {
   // var name     = document.getElementById('name').value
   var email    = document.getElementById('email').value
   var password = document.getElementById('password').value 
-  var create  = document.getElementById('create'); 
+  // var create  = document.getElementById('create'); 
 
   // var url = '/account/create/'+ name + '/' + email + '/' + password
 
@@ -25,7 +25,8 @@ function create() {
         console.log("Create Success")
         console.log(user)
         console.log(user.user.uid)
-        create.innerHTML = "Create Success"
+        window.location ='../dashboard.html'
+        // create.innerHTML = "Create Success"
       }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -43,14 +44,15 @@ function create() {
 function login() {
   var email    = document.getElementById('loginEmail').value;
   var password = document.getElementById('loginPassword').value;
-  var login  = document.getElementById('login'); 
+  // var login  = document.getElementById('login'); 
   
   firebase.auth().signInWithEmailAndPassword(email, password)
   .then(user => {
       console.log("Login Success")
         console.log(user)
         console.log(user.user.uid)
-        login.innerHTML = "Login Success"
+        window.location ='../dashboard.html'
+        // login.innerHTML = "Login Success"
       })
   .catch(function(error) {
       // Handle Errors here.
