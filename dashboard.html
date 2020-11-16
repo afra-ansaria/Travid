@@ -20,67 +20,62 @@
     <link rel="stylesheet" href="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css">
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
-    <script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+    <script src='js/dropdown.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+    <script src='js/rest/index.js'></script>
+    <script src='js/api/covid/index.js'></script>
+    <!-- <script src='js/apiTest.js'></script> -->
+    <script src='js/eventListeners/index.js'></script>
+
+<script>
 google.charts.load('current', {packages: ['corechart', 'line']});
 google.charts.load('current', {'packages':['line']});
 
 google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
+function drawChart(){
 
-var data = new google.visualization.DataTable();
-data.addColumn('number', 'Month');
-data.addColumn('number', 'Cases');
-data.addColumn('number', 'Deaths');
+var chart_data = new google.visualization.DataTable();
+chart_data.addColumn('string', 'Day');
+chart_data.addColumn('number', 'Cases');
+chart_data.addColumn('number', 'Deaths');
+   
 
-//data.addColumn('date', 'Month');
+COVIDAPI.getPastDataForCountry('US')
+.then(data => {
+    console.log("Checking past data here")
+    console.log(data);
+    chart_data.addRows(data)
 
-data.addRows([
-  [1,  37.8, 80.8],
-  [2,  30.9, 69.5],
-  [3,  25.4,   57],
-  [4,  11.7, 18.8],
-  [5,  11.9, 17.6],
-  [6,   8.8, 13.6],
-  [7,   7.6, 12.3],
-  [8,  12.3, 29.2],
-  [9,  16.9, 42.9],
-  [10, 12.8, 30.9],
-  [11,  5.3,  7.9],
-  [12,  6.6,  8.4],
-
-  //[new Date(2014, 5),  9, 20.9],
-
-
-]);
-
-var options = {
+ var options = {
   chart: {
     title: 'Confirmed COVID-19 Cases and Predicted Trends',
     subtitle: 'in thousands of people',
     tooltip: {isHtml: true},
-
   },
   vAxes: {
           // Adds titles to each axis.
-          0: {title: 'Total Monthly Count'},
+          0: {title: 'Total Daily Count'},
         },
-//  width: 1200,
- // height: 500
+
 };
 
 var chart = new google.charts.Line(document.getElementById('chart_div'));
 
-chart.draw(data, google.charts.Line.convertOptions(options));
-
-$(document).ready(function () {
-    $(window).resize(function(){
-        drawChart();
-    });
+chart.draw(chart_data, google.charts.Line.convertOptions(options));
 });
 
-}
 
+ $(document).ready(function () {
+     $(window).resize(function(){
+        drawChart();
+     });
+ });
+
+}
 </script>
 
 </head>
@@ -276,7 +271,7 @@ height:500px;
                     </div>
                 </div>
                 <!-- ============================================================== -->
-                <!-- RECENT SALES -->
+                <!-- COVID CHART BY COUNTRY -->
                 <!-- ============================================================== -->
                 <body onload="dropdown()"></body>
                 <div class="row">
@@ -291,69 +286,6 @@ height:500px;
                                     </select>
                                 </div>
                             </div>
-                            <!-- <div class="table-responsive">
-                                <table class="table no-wrap">
-                                    <thead>
-                                        <tr>
-                                            <th class="border-top-0">#</th>
-                                            <th class="border-top-0">NAME</th>
-                                            <th class="border-top-0">STATUS</th>
-                                            <th class="border-top-0">DATE</th>
-                                            <th class="border-top-0">PRICE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td class="txt-oflo">Elite admin</td>
-                                            <td>SALE</td>
-                                            <td class="txt-oflo">April 18, 2017</td>
-                                            <td><span class="text-success">$24</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td class="txt-oflo">Real Homes WP Theme</td>
-                                            <td>EXTENDED</td>
-                                            <td class="txt-oflo">April 19, 2017</td>
-                                            <td><span class="text-info">$1250</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td class="txt-oflo">Ample Admin</td>
-                                            <td>EXTENDED</td>
-                                            <td class="txt-oflo">April 19, 2017</td>
-                                            <td><span class="text-info">$1250</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td class="txt-oflo">Medical Pro WP Theme</td>
-                                            <td>TAX</td>
-                                            <td class="txt-oflo">April 20, 2017</td>
-                                            <td><span class="text-danger">-$24</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td class="txt-oflo">Hosting press html</td>
-                                            <td>SALE</td>
-                                            <td class="txt-oflo">April 21, 2017</td>
-                                            <td><span class="text-success">$24</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>6</td>
-                                            <td class="txt-oflo">Digital Agency PSD</td>
-                                            <td>SALE</td>
-                                            <td class="txt-oflo">April 23, 2017</td>
-                                            <td><span class="text-danger">-$14</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>7</td>
-                                            <td class="txt-oflo">Helping Hands WP Theme</td>
-                                            <td>MEMBER</td>
-                                            <td class="txt-oflo">April 22, 2017</td>
-                                            <td><span class="text-success">$64</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table> -->
 
                                 <div id="chart_div"  style="width:100%; height:500px"></div>
 
@@ -590,11 +522,6 @@ height:500px;
     <script src="js/custom.js"></script>
     <!--This page JavaScript -->
     <!--chartis chart-->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
-    <script src='js/rest/index.js'></script>
-    <script src='js/api/covid/index.js'></script>
-    <script src='js/dropdown.js'></script>
     <script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
     <script src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
     <script src="js/pages/dashboards/dashboard1.js"></script>
