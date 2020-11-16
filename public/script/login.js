@@ -25,7 +25,10 @@ function create() {
         console.log("Create Success")
         console.log(user)
         console.log(user.user.uid)
-        window.location ='../dashboard.html'
+        alert("Create Success");
+        window.location ='dashboard.html'
+        var userid = user.user.uid
+        console.log(user.user.uid)
         // create.innerHTML = "Create Success"
       }).catch(function(error) {
       // Handle Errors here.
@@ -51,7 +54,7 @@ function login() {
       console.log("Login Success")
         console.log(user)
         console.log(user.user.uid)
-        window.location ='../dashboard.html'
+        window.location ='dashboard.html'
         // login.innerHTML = "Login Success"
       })
   .catch(function(error) {
