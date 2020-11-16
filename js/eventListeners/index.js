@@ -1,10 +1,14 @@
-const countrySelect = document.querySelector('#countryDrops');
+const EventListners = function(){
+    const countrySelect = document.querySelector('#countryDrops');
+    return {
+        addListeners: () => {
+            window.addEventListener('resize', () => {
+                Charts.drawCovidChart();
+            });
+            countrySelect.addEventListener('change', () => {
+                Charts.drawCovidChart();
+            })
+        }
+    }
+}()
 
-countrySelect.addEventListener('change', (event) => {
-    const alpha2Code = event.target.value;
-    COVIDAPI
-        .getPastDataForCountry(alpha2Code)
-        .then(data => {
-            console.log(data);
-        });
-})
