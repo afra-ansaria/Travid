@@ -32,7 +32,6 @@ const COVIDAPI = function(){
             .get(`https://covid19-api.org/api/timeline/${alpha2Code}`)
             .then(data => {
                 return data
-                .slice(0, 7)
                 .map(formatPastData)
                 .reverse();
             });
@@ -46,7 +45,6 @@ const COVIDAPI = function(){
                 .get(`https://covid19-api.org/api/prediction/${alpha2Code}`)
                 .then(data => {
                     return data
-                    .slice(1, 8)
                     .map(formatPredictedData);
                 });
         },
