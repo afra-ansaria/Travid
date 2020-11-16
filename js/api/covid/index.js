@@ -4,14 +4,15 @@ const COVIDAPI = function(){
     }
     function formatPastData(entry) {
         return [
+            formatDate(entry.last_update),
             entry.cases,
-            formatDate(entry.last_update) 
+            entry.deaths
         ]
     }
     function formatPredictedData(entry) {
         return [
-            entry.cases,
-            formatDate(entry.date)
+            formatDate(entry.date),
+            entry.cases
         ]
     }
     function formatCountriesData(entry) {
@@ -24,7 +25,7 @@ const COVIDAPI = function(){
         /**
          * Returns the past COVID data for the country corresponding
          * to the passed in alpha2 code. Each entry in the response has the following
-         * fields: The return type is [[cases, date]]
+         * fields: The return type is [[date, cases]]
         */
         getPastDataForCountry: (alpha2Code) => {
             return RESTService
@@ -38,7 +39,7 @@ const COVIDAPI = function(){
         },
         /**
          * Returns the predicted COVID data for the country corresponding
-         * to the passed in alpha2 code. The return type is [[cases, date]]
+         * to the passed in alpha2 code. The return type is [[date, cases]]
         */
         getPredictedDataForCountry: (alpha2Code) => {
             return RESTService
