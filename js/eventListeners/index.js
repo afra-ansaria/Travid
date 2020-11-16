@@ -6,5 +6,5 @@ countrySelect.addEventListener('change', (event) => {
         .getPastDataForCountry(alpha2Code)
         .then(data => {
             console.log(data);
-        })
+        });
 })
