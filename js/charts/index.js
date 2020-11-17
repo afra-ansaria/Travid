@@ -12,13 +12,13 @@ const Charts = function(){
         chart_data.addRows(covidData)
         const options = {
             chart: {
-                title: `Total Confirmed COVID-19 Cases for ${countrySelection.text}`,
+                title: `Total Confirmed COVID-19 Cases & Deaths for ${countrySelection.text}`,
                 // subtitle: 'in thousands of people',
                 tooltip: {isHtml: true},
             },
             vAxes: {
                     // Adds titles to each axis.
-                    0: { title: 'Total Confirmed Cases'},
+                    0: { title: 'Total Confirmed & Deaths Cases'},
             },
 
         };
