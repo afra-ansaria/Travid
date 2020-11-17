@@ -6,7 +6,7 @@ var app = express()
 var cors    = require('cors');
 app.use(cors());
 
-app.use(express.static('public'))
+app.use(express.static('/'))
 
 app.get('/', function(req, res){
     res.send('Hello World!')
