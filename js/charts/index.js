@@ -8,7 +8,7 @@ const Charts = function(){
         const chart_data = new google.visualization.DataTable();
         chart_data.addColumn('string', 'Day');
         chart_data.addColumn('number', 'Cases');
-        // chart_data.addColumn('number', 'Deaths');
+        chart_data.addColumn('number', 'Deaths');
         chart_data.addRows(covidData)
         const options = {
             chart: {

@@ -6,7 +6,7 @@ const COVIDAPI = function(){
         return [
             formatDate(entry.last_update),
             entry.cases,
-            // entry.deaths
+            entry.deaths
         ]
     }
     function formatPredictedData(entry) {
