@@ -5,10 +5,11 @@ const EventListners = function(){
             window.addEventListener('resize', () => {
                 Charts.drawCovidChart();
             });
-            countrySelect.addEventListener('change', () => {
-                Charts.drawCovidChart();
+            countrySelect.addEventListener('change', async () => {
+                await Charts.drawCovidChart();
+                await NewsFeed.populateNewsFeed();
             })
         }
     }
-}()
+}();
 
