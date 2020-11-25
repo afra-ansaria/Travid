@@ -12,7 +12,6 @@ const Charts = function(){
         chart_data.addColumn('number', 'Cases');
         chart_data.addColumn('number', 'Deaths');
         chart_data.addColumn('number', 'Predictions');
-        console.log(covidPredictedData);
         chart_data.addRows(covidData);
         chart_data.addRows(covidPredictedData);
 
