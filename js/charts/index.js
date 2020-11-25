@@ -5,11 +5,15 @@ const Charts = function(){
         const countrySelection = countryDropdown.options[countryDropdown.selectedIndex];
         const countryAlpha2 = countrySelection.value;
         const covidData = await COVIDAPI.getPastDataForCountry(countryAlpha2);
+        const covidPredictedData = await COVIDAPI.getPredictedDataForCountry(countryAlpha2);
+
         const chart_data = new google.visualization.DataTable();
         chart_data.addColumn('string', 'Day');
         chart_data.addColumn('number', 'Cases');
         chart_data.addColumn('number', 'Deaths');
         chart_data.addRows(covidData)
+        chart_data.addRows(covidPredictedData)
+
         const options = {
             chart: {
                 title: `Total Confirmed COVID-19 Cases & Deaths for ${countrySelection.text}`,
