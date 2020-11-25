@@ -6,14 +6,16 @@ const COVIDAPI = function(){
         return [
             formatDate(entry.last_update),
             entry.cases,
-            entry.deaths
+            entry.deaths,
+            null,
         ]
     }
     function formatPredictedData(entry) {
         return [
             formatDate(entry.date),
-            entry.cases,
-            entry.deaths
+            null, 
+            null,
+            entry.cases
         ]
     }
     function formatCountriesData(entry) {
