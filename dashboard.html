@@ -13,7 +13,7 @@
         <title>Travid</title>
         <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
         <!-- Favicon icon -->
-        <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon_travid.png">
         <!-- Custom CSS -->
         <link href="plugins/bower_components/chartist/dist/chartist.min.css" rel="stylesheet">
         <link rel="stylesheet" href="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css">
@@ -25,7 +25,7 @@
             height:500px;
         }
     </style>
-    <body>
+    <body > 
         <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
@@ -87,11 +87,11 @@
                             <!-- Search -->
                             <!-- ============================================================== -->
                             <li class=" in">
-                                <form role="search" class="app-search d-none d-md-block mr-3">
-                                    <input type="text" placeholder="Search..." class="form-control mt-0">
-                                    <a href="" class="active">
+                                <form role="search" class="app-search d-none d-md-block mr-3" id="searchform" onSubmit="return false;">
+                                    <input id="stock_search" type="text"  placeholder="NASDAQ..." class="form-control mt-0">
+                                     <a href="" class="active" onclick="reloadStock()">
                                         <i class="fa fa-search"></i>
-                                    </a>
+                                    </a> 
                                 </form>
                             </li>
                             <!-- ============================================================== -->
@@ -99,7 +99,7 @@
                             <!-- ============================================================== -->
                             <li>
                                 <a class="profile-pic" href="#">
-                                    <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
+                                    <img src="plugins/images/travid_avatar.png" alt="user-img" width="36"
                                         class="img-circle"><span class="text-white font-medium">Tochi</span></a>
                             </li>
                             <!-- ============================================================== -->
@@ -159,6 +159,7 @@
                             <h4 class="page-title text-uppercase font-medium font-14">Dashboard</h4>
                         </div>
                         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                            
                             <div class="d-md-flex">
                                 <ol class="breadcrumb ml-auto">
                                 </ol>
@@ -170,6 +171,43 @@
                     <!-- /.col-lg-12 -->
                 </div>
 
+                <div>
+                    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+    "symbols": [
+      {
+        "proName": "FOREXCOM:SPXUSD",
+        "title": "S&P 500"
+      },
+      {
+        "proName": "FOREXCOM:NSXUSD",
+        "title": "Nasdaq 100"
+      },
+      {
+        "proName": "FX_IDC:EURUSD",
+        "title": "EUR/USD"
+      },
+      {
+        "proName": "BITSTAMP:BTCUSD",
+        "title": "BTC/USD"
+      },
+      {
+        "proName": "BITSTAMP:ETHUSD",
+        "title": "ETH/USD"
+      }
+    ],
+    "showSymbolLogo": true,
+    "colorTheme": "light",
+    "isTransparent": false,
+    "displayMode": "adaptive",
+    "locale": "en"
+  }
+    </script>
+  </div>
+                </div>
                 <div class="container-fluid">
 
                     <div class="row">
@@ -182,10 +220,16 @@
                                         <div id="tradingview_15ab1"></div>
                                         <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
                                         <script type="text/javascript">
+
+                                        function reloadStock(){
+                                        const stock_input = document.getElementById("stock_search").value;
+                                        return stock_input;
+                                        }
+
                                         new TradingView.widget(
                                         {
                                         "autosize": true,
-                                        "symbol": "GOOG",
+                                        "symbol": reloadStock(),
                                         "interval": "W",
                                         "timezone": "Etc/UTC",
                                         "theme": "light",
@@ -194,12 +238,9 @@
                                         "toolbar_bg": "#f1f3f6",
                                         "enable_publishing": false,
                                         "allow_symbol_change": true,
-                                        "watchlist":[
-                                            "MSFT",
-                                            "PINS"
-                                        ],
-                                        "container_id": "tradingview_cbc98"
-                                        
+                                        "container_id": "tradingview_cbc98",
+                                        "details": true,
+                                        "hide_top_toolbar": true
                                     }
                                         );
                                         </script>
