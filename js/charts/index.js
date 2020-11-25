@@ -11,8 +11,10 @@ const Charts = function(){
         chart_data.addColumn('string', 'Day');
         chart_data.addColumn('number', 'Cases');
         chart_data.addColumn('number', 'Deaths');
-        chart_data.addRows(covidData)
-        chart_data.addRows(covidPredictedData)
+        chart_data.addColumn('number', 'Predictions');
+        console.log(covidPredictedData);
+        chart_data.addRows(covidData);
+        chart_data.addRows(covidPredictedData);
 
         const options = {
             chart: {
@@ -24,7 +26,10 @@ const Charts = function(){
                     // Adds titles to each axis.
                     0: { title: 'Total Confirmed & Deaths Cases'},
             },
-
+            crosshair: { 
+                trigger: 'both',
+                orientation: 'vertical'
+            }
         };
         const chart = new google.charts.Line(document.getElementById('chart_div'));
         chart.draw(chart_data, google.charts.Line.convertOptions(options));
