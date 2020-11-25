@@ -12,7 +12,8 @@ const COVIDAPI = function(){
     function formatPredictedData(entry) {
         return [
             formatDate(entry.date),
-            entry.cases
+            entry.cases,
+            entry.deaths
         ]
     }
     function formatCountriesData(entry) {
