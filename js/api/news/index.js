@@ -40,8 +40,8 @@ const NewsAPI = function(){
         const seen = new Set();
         const result = [];
         news.forEach(entry => {
-            if (!seen.has(entry.title)) {
-                seen.add(entry.title);
+            if (!seen.has(entry.title.toLowerCase())) {
+                seen.add(entry.title.toLowerCase());
                 result.push(entry);
             }
         });
