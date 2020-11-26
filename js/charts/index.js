@@ -12,7 +12,10 @@ const Charts = function(){
         chart_data.addColumn('number', 'Confirmed Cases');
         chart_data.addColumn('number', 'Confirmed Deaths');
         chart_data.addColumn('number', 'Predicted Cases');
-        chart_data.addRows([...covidPastData, ...covidPredictedData]);
+        chart_data.addRows(covidPastData);
+        chart_data.addRows([[covidPastData[covidPastData.length - 1][0],undefined, undefined, covidPastData[covidPastData.length - 1][1]]]);
+        chart_data.addRows(covidPredictedData);
+       // chart_data.addRows([...covidPastData, ...covidPredictedData]);
 
         const options = {
             chart: {
@@ -22,7 +25,10 @@ const Charts = function(){
             },
             vAxes: {
                     // Adds titles to each axis.
-                    0: { title: 'Total Cases, Deaths and Predictions'},
+                    0: { 
+                    title: 'Total Cases, Deaths and Predictions',
+                    format: '#,###,###'                
+                    },
             },
             crosshair: { 
                 trigger: 'both',
