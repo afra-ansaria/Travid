@@ -20,11 +20,6 @@
         <!-- Custom CSS -->
         <link href="css/style.min.css" rel="stylesheet">
     </head>
-    <style>
-        #myTradingViewContainer{
-            height:500px;
-        }
-    </style>
     <body > 
         <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
@@ -82,19 +77,6 @@
                         <!-- Right side toggle and nav items -->
                         <!-- ============================================================== -->
                         <ul class="navbar-nav ml-auto d-flex align-items-center">
-
-                            <!-- ============================================================== -->
-                            <!-- Search -->
-                            <!-- ============================================================== -->
-                            <li class=" in">
-                                <form role="search" class="app-search d-none d-md-block mr-3" id="searchform" onSubmit="return false;">
-                                    <input id="stock_search" type="text"  value="GOOG" placeholder="NASDAQ..." class="form-control mt-0">
-                                     <a href="" class="active" id="stock_search_button">
-                                        <i class="fa fa-search"></i>
-                                    </a> 
-                                </form>
-                            </li>
-                            <!-- ============================================================== -->
                             <!-- User profile and search -->
                             <!-- ============================================================== -->
                             <li>
@@ -169,81 +151,62 @@
                         </div>
                     </div>
                     <!-- /.col-lg-12 -->
-                </div>
-
-                <div>
-                    <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-    "symbols": [
-      {
-        "proName": "FOREXCOM:SPXUSD",
-        "title": "S&P 500"
-      },
-      {
-        "proName": "FOREXCOM:NSXUSD",
-        "title": "Nasdaq 100"
-      },
-      {
-        "proName": "FX_IDC:EURUSD",
-        "title": "EUR/USD"
-      },
-      {
-        "proName": "BITSTAMP:BTCUSD",
-        "title": "BTC/USD"
-      },
-      {
-        "proName": "BITSTAMP:ETHUSD",
-        "title": "ETH/USD"
-      }
-    ],
-    "showSymbolLogo": true,
-    "colorTheme": "light",
-    "isTransparent": false,
-    "displayMode": "adaptive",
-    "locale": "en"
-  }
-    </script>
-  </div>
-                </div>
+                </div>             
                 <div class="container-fluid">
-
+                    <!-- TradingView Widget BEGIN -->
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                            {
+                            "symbols": [
+                            {
+                                "proName": "FOREXCOM:SPXUSD",
+                                "title": "S&P 500"
+                            },
+                            {
+                                "proName": "FOREXCOM:NSXUSD",
+                                "title": "Nasdaq 100"
+                            },
+                            {
+                                "proName": "FX_IDC:EURUSD",
+                                "title": "EUR/USD"
+                            },
+                            {
+                                "proName": "BITSTAMP:BTCUSD",
+                                "title": "BTC/USD"
+                            },
+                            {
+                                "proName": "BITSTAMP:ETHUSD",
+                                "title": "ETH/USD"
+                            }
+                            ],
+                            "showSymbolLogo": true,
+                            "colorTheme": "light",
+                            "isTransparent": false,
+                            "displayMode": "adaptive",
+                            "locale": "en"
+                        }
+                        </script>
+                    </div>
                     <div class="row">
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <div class="white-box">
-                                <h3 class="box-title">Stock Trends</h3>
-                                
+                                <div class='row'>
+                                    <div class="col-md-9 col-lg-9 col-sm-9">
+                                        <h3 class="box-title">Stock Trends</h3>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-3">
+                                        <div class="input-group mb-3">
+                                            <input id='stock_search_input' value="SPY" type="text" class="form-control" placeholder="Enter stock symbol" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                            <div class="input-group-append">
+                                              <button id='stock_search_button' class="btn btn-outline-secondary" type="button">Load Stock</button>
+                                            </div>
+                                          </div>
+                                    </div>
+                                </div>
                                 <div style="height: 505px;">
                                     <div class="tradingview-widget-container" style="height: 505px;">
-                                        <div id="tradingview_15ab1"></div>
-                                        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-                                        <script type="text/javascript">
-
-                                        function reloadStock(){
-                                        const stock_input = document.getElementById("stock_search").value;
-                                        return stock_input;
-                                        }
-
-                                        new TradingView.widget(
-                                        {
-                                        "autosize": true,
-                                        "symbol": reloadStock(),
-                                        "interval": "W",
-                                        "timezone": "Etc/UTC",
-                                        "theme": "light",
-                                        "style": "3",
-                                        "locale": "en",
-                                        "toolbar_bg": "#f1f3f6",
-                                        "enable_publishing": false,
-                                        "allow_symbol_change": true,
-                                        "container_id": "tradingview_cbc98",
-                                        "details": true,
-                                        "hide_top_toolbar": true
-                                       }
-                                        );
-                                        </script>
+                                        <div id="tradingview_cbc98"></div>                                        
                                     </div>
                                 </div>
                             </div>
@@ -257,17 +220,12 @@
                             <div class="white-box">
                                 <div class="d-md-flex mb-3">
                                     <h3 class="box-title mb-0">COVID Data by Country</h3>
-                                    <!-- <script> window.onload = dropdown;</script> -->
                                     <div class="col-md-3 col-sm-4 col-xs-6 ml-auto">
                                         <select id = "countryDrops" class="form-control row border-top" >
-                                            <!-- <option>United States</option> -->
                                         </select>
                                     </div>
                                 </div>
-
-                                    <div id="chart_div"  style="width:100%; height:500px"></div>
-
-                                </div>
+                                <div id="chart_div"  style="width:100%; height:500px"></div>
                             </div>
                         </div>
                     </div>
@@ -294,13 +252,6 @@
                 </div>
                 <!-- ============================================================== -->
                 <!-- End Container fluid  -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- footer -->
-                <!-- ============================================================== -->
-
-                <!-- ============================================================== -->
-                <!-- End footer -->
                 <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
@@ -349,6 +300,7 @@
         <script src="js/pages/dashboards/dashboard1.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
         <script src='js/rest/index.js'></script>
         <script src='js/api/covid/index.js'></script>
         <script src='js/api/news/index.js'></script>
