@@ -6,11 +6,13 @@ const EventListners = function(){
         addListeners: () => {
             window.addEventListener('resize', () => {
                 Charts.drawCovidChart();
+                Charts.drawCovidMap();
             });
             countrySelect.addEventListener('change', async () => {
+                Charts.drawCovidMap();
                 await Charts.drawCovidChart();
-                await NewsFeed.populateNewsFeed();
-            })
+                await NewsFeed.populateNewsFeed(); 
+            });
             stockSearchButton.addEventListener('click', (event) => {
                 Charts.drawStockChart();
             });

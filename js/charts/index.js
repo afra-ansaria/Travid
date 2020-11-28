@@ -38,6 +38,29 @@ const Charts = function(){
         const chart = new google.charts.Line(document.getElementById('chart_div'));
         chart.draw(chart_data, google.charts.Line.convertOptions(options));
     }
+    function drawCovidMap() {
+        const chart = new google.visualization.GeoChart(document.getElementById('map_div'));
+        chart.clearChart();
+        const countryDropdown = document.querySelector('#countryDrops');
+        const countrySelection = countryDropdown.options[countryDropdown.selectedIndex];
+        const dataTable = [
+            ["Country"],
+            [countrySelection.text]
+        ];
+        const data = google.visualization.arrayToDataTable(dataTable);
+        const options = {
+            displayMode: 'region',
+            datalessRegionColor: 'white',
+            defaultColor: 'grey'
+        };
+       
+        chart.draw(data, options);
+        google.visualization.events.addListener(chart, 'regionClick', (event) => {
+            const countryDropdown = document.querySelector('#countryDrops');
+            countryDropdown.value = event.region;
+            countryDropdown.dispatchEvent(new Event('change'));
+        });
+    }
     function drawStockChart() {
         const stockSearchInput = document.querySelector("#stock_search_input");
         const { value } = stockSearchInput;
@@ -63,11 +86,15 @@ const Charts = function(){
             alert("Please enter a stock symbol!");
         }
     }
-    google.charts.load('current', { packages: ['corechart', 'line'] });
-    google.charts.load('current', {'packages':['line']});
+    google.charts.load('current', {
+        'packages': ['corechart', 'line', 'geochart'],
+        'mapsApiKey': 'AIzaSyBPjqMqmYf8a_BmuufiYYl63rIv2obqSV0'
+      });
     google.charts.setOnLoadCallback(drawCovidChart);
+    google.charts.setOnLoadCallback(drawCovidMap);
     return {
         drawCovidChart,
+        drawCovidMap,
         drawStockChart
     }
 }()
