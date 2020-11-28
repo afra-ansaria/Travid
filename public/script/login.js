@@ -18,16 +18,24 @@ function create() {
   // var create  = document.getElementById('create'); 
 
   // var url = '/account/create/'+ name + '/' + email + '/' + password
-
+  if (!email){
+    alert("Please enter the email")
+    return
+  }
+  if (!password){
+    alert("Please enter the password")
+    return
+  }
+  
   firebase.auth()
   .createUserWithEmailAndPassword(email, password)
   .then(user => {
         console.log("Create Success")
         console.log(user)
         console.log(user.user.uid)
-        alert("Create Success");
-        window.location ='dashboard.html'
         var userid = user.user.uid
+        alert("Create Success");
+        window.location ='dashboard.html'+ '?'+'user='+userid
         console.log(user.user.uid)
         // create.innerHTML = "Create Success"
       }).catch(function(error) {
@@ -48,13 +56,23 @@ function login() {
   var email    = document.getElementById('loginEmail').value;
   var password = document.getElementById('loginPassword').value;
   // var login  = document.getElementById('login'); 
-  
+  if (!email){
+    alert("Please enter the email")
+    return
+  }
+  if (!password){
+    alert("Please enter the password")
+    return
+  }
   firebase.auth().signInWithEmailAndPassword(email, password)
   .then(user => {
       console.log("Login Success")
         console.log(user)
         console.log(user.user.uid)
-        window.location ='dashboard.html'
+        var userid = user.user.uid
+        window.location ='dashboard.html'+ '?'+'user='+userid
+        console.log(user)
+        console.log(user.user.uid)
         // login.innerHTML = "Login Success"
       })
   .catch(function(error) {
