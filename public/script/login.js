@@ -10,6 +10,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
 
 function create() {
   // var name     = document.getElementById('name').value
@@ -26,15 +27,23 @@ function create() {
     alert("Please enter the password")
     return
   }
-  
+
   firebase.auth()
   .createUserWithEmailAndPassword(email, password)
   .then(user => {
         console.log("Create Success")
         console.log(user)
         console.log(user.user.uid)
-        var userid = user.user.uid
-        alert("Create Success");
+        const userid = user.user.uid
+        // alert("Create Success");
+
+      //   db.collection("watchlists").doc(String(userId)).set({'watchlists':[default_watchlist]})
+      //   .then(function() {
+      //     console.log("Default Watchlist successfully created!");
+      //   }).catch(function(error) {
+      //     console.error("Error writing document: ", error);
+      // })
+
         window.location ='dashboard.html'+ '?'+'user='+userid
         console.log(user.user.uid)
         // create.innerHTML = "Create Success"
@@ -49,6 +58,8 @@ function create() {
         }
         console.log(error);
     });
+   
+  // creatDefaultWatchList()
 
 }
 
@@ -86,5 +97,91 @@ function login() {
         }
         console.log(error);
     });
+}
+
+function creatDefaultWatchList(){
+  console.log("create default watchlist")
+  var default_watchlist = {
+    'name': 'default',
+    'country': 'India',
+    'stockId': 'GOOG'
+  }
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('user');
+  var watchlistsRef = db.collection("watchlists").doc(String(userId))
+  watchlistsRef.get().then(function(doc) {
+    if (doc.exists) {
+        console.log("Watchlist exists for the user. Do Nothing");
+    } else {
+        // doc.data() will be undefined in this case
+        // console.log("No such document!");
+        console.log("creating new watchlist for the user ", userId)
+    watchlistsRef.set({'watchlists':[default_watchlist]})
+        .then(function() {
+          console.log("Default Watchlist successfully created!");
+        }).catch(function(error) {
+          console.error("Error writing document: ", error);
+      })
+    }
+}).catch(function(error) {
+    console.log("Error getting document:", error);
+});
+  // if (!watchlistsRef.exists){
+  //   console.log("creating new watchlist for the user ", userId)
+  //   watchlistsRef.set({'watchlists':[default_watchlist]})
+  //       .then(function() {
+  //         console.log("Default Watchlist successfully created!");
+  //       }).catch(function(error) {
+  //         console.error("Error writing document: ", error);
+  //     })
+  // }
+  
+}
+
+function addToWatchList() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('user');
+  console.log("Adding new document to watchlist for user", userId)
+  
+
+  // var country    = document.getElementById('country').value
+  // var stockId = document.getElementById('stockId').value 
+  // var name = document.getElementById('watchlist_name').value 
+  // var userId = '1234'
+  var country = 'USA'
+  var stockId = 'GOOG'
+  var watchlistObject = {
+    'country': country,
+    'stockId': stockId,
+    'name': 'name1'
+  }
+  var watchlistRef = db.collection("watchlists").doc(userId);
+  console.log("watchlist is ", watchlistRef)
+  watchlistRef.update({
+    watchlists: firebase.firestore.FieldValue.arrayUnion(watchlistObject)
+})
+.then(function() {
+    console.log("Document is updated");
+})
+.catch(function(error) {
+    console.error("Error adding document: ", error);
+});
+}
+
+function getAllWatchLists(){
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('user');
+  console.log("Get all watchlists for the user ", userId)
+  var watchlistRef = db.collection("watchlists").doc(userId);
+  watchlistRef.get().then(function(doc) {
+    if (doc.exists) {
+        console.log("Document data:", doc.data());
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
+}).catch(function(error) {
+    console.log("Error getting document:", error);
+});
 }
 
