@@ -209,10 +209,13 @@ function populatewatchlists(data){
         select.value= 'default'
 }
 
-function getWatchlistFromName(name){
+function getWatchlistFromName(){
   const urlParams = new URLSearchParams(window.location.search);
   const userId = urlParams.get('user');
+  var select = document.getElementById('watchlistDrops')
+  var name = select.options[select.selectedIndex].value
   console.log("getting watchlist for name is ", name)
+  
   var watchlistRef = db.collection("watchlists").doc(userId);
   var watchlistData = []
   watchlistRef.get().then(function(doc) {
@@ -220,13 +223,16 @@ function getWatchlistFromName(name){
         watchlistsArr = doc.data()['watchlists'];
         watchlistData = watchlistsArr.find(item => item.name===name)
         console.log("watchlist is ", watchlistData)
+        console.log("Setting tickers")
+        var ticker = document.getElementById("watchlistStock")
+        ticker.value = watchlistData['stockId']
+        var country = document.getElementById("watchlistCountry")
+        country.value = watchlistData['country']
     } else {
         console.log("No watchlist for the user");
     }
 }).catch(function(error) {
     console.log("Error getting document:", error);
 });
-  return watchlistData
-
 }
 
