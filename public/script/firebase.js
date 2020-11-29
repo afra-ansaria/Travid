@@ -126,15 +126,7 @@ function creatDefaultWatchList(){
 }).catch(function(error) {
     console.log("Error getting document:", error);
 });
-  // if (!watchlistsRef.exists){
-  //   console.log("creating new watchlist for the user ", userId)
-  //   watchlistsRef.set({'watchlists':[default_watchlist]})
-  //       .then(function() {
-  //         console.log("Default Watchlist successfully created!");
-  //       }).catch(function(error) {
-  //         console.error("Error writing document: ", error);
-  //     })
-  // }
+
   
 }
 
@@ -144,16 +136,27 @@ function addToWatchList() {
   console.log("Adding new document to watchlist for user", userId)
   
 
-  // var country    = document.getElementById('country').value
-  // var stockId = document.getElementById('stockId').value 
-  // var name = document.getElementById('watchlist_name').value 
-  // var userId = '1234'
-  var country = 'USA'
-  var stockId = 'GOOG'
+  var country    = document.getElementById('countryDrops').value
+  var ticker = document.getElementById('ticker').value 
+  var watchlistName = document.getElementById('watchlistName').value 
+
+    if (!country){
+    alert("Please enter the country")
+    return
+  }
+  if (!ticker){
+    alert("Please enter the ticker")
+    return
+  }
+  if (!watchlistName){
+    alert("Please enter the watchlistName")
+    return
+  }  
+  
   var watchlistObject = {
     'country': country,
-    'stockId': stockId,
-    'name': 'name1'
+    'stockId': ticker,
+    'name': watchlistName
   }
   var watchlistRef = db.collection("watchlists").doc(userId);
   console.log("watchlist is ", watchlistRef)
@@ -162,6 +165,7 @@ function addToWatchList() {
 })
 .then(function() {
     console.log("Document is updated");
+    alert("Watchlist saved")
 })
 .catch(function(error) {
     console.error("Error adding document: ", error);
@@ -173,15 +177,53 @@ function getAllWatchLists(){
   const userId = urlParams.get('user');
   console.log("Get all watchlists for the user ", userId)
   var watchlistRef = db.collection("watchlists").doc(userId);
+  var watchlistsData = []
   watchlistRef.get().then(function(doc) {
     if (doc.exists) {
-        console.log("Document data:", doc.data());
+        watchlistsData = doc.data()['watchlists'];
+        populatewatchlists(watchlistsData)
     } else {
         // doc.data() will be undefined in this case
-        console.log("No such document!");
+        console.log("No watchlists for the user");
     }
 }).catch(function(error) {
     console.log("Error getting document:", error);
 });
+console.log("Returning watchlist data ", watchlistsData)
+return watchlistsData
+}
+
+function populatewatchlists(data){
+  var select = document.getElementById("watchlistDrops");
+  for(var i = 0; i < data.length; i++) {
+            console.log(data[i])
+            var opt = data[i].name;
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+        }
+        select.value= 'default'
+}
+
+function getWatchlistFromName(name){
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('user');
+  console.log("getting watchlist for name is ", name)
+  var watchlistRef = db.collection("watchlists").doc(userId);
+  var watchlistData = []
+  watchlistRef.get().then(function(doc) {
+    if (doc.exists) {
+        watchlistsArr = doc.data()['watchlists'];
+        watchlistData = watchlistsArr.find(item => item.name===name)
+        console.log("watchlist is ", watchlistData)
+    } else {
+        console.log("No watchlist for the user");
+    }
+}).catch(function(error) {
+    console.log("Error getting document:", error);
+});
+  return watchlistData
+
 }
 
