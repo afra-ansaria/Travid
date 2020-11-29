@@ -154,9 +154,11 @@
                                 </ol>
                                 
                                     <div class="col-md-3 col-sm-4 col-xs-6 ml-auto">
-                                        <select id = "watchlistDrops" class="form-control row border-top" >
+                                        <select id = "watchlistDrops" class="form-control row border-top" onchange="getWatchlistFromName()">
                                         </select>
                                     </div>
+                                    <div id='watchlistCountry' style="display: none;" ></div>
+                                    <div id='watchlistStock' style="display: none;"></div>
                                 
                                     <button type="button" class="btn btn-danger d-none d-md-block pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light" data-toggle="modal" data-target="#watchListModal">
                                         Add to Watchlist
