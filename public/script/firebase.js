@@ -135,8 +135,7 @@ function addToWatchList() {
   var userId = firebase.auth().currentUser.uid;
   console.log("Adding new document to watchlist for user", userId)
   
-
-  var country    = document.getElementById('countryDrops').value
+  var country    = document.getElementById('countryDrops2').value
   var ticker = document.getElementById('ticker').value 
   var watchlistName = document.getElementById('watchlistName').value 
 
