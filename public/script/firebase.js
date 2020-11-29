@@ -103,18 +103,18 @@ function creatDefaultWatchList(){
   console.log("create default watchlist")
   var default_watchlist = {
     'name': 'default',
-    'country': 'India',
-    'stockId': 'GOOG'
+    'country': 'US',
+    'stockId': 'GOOG',
+    'country_alpha': 'US'
   }
   const urlParams = new URLSearchParams(window.location.search);
   const userId = urlParams.get('user');
+  // var userId = firebase.auth().currentUser.uid;
   var watchlistsRef = db.collection("watchlists").doc(String(userId))
   watchlistsRef.get().then(function(doc) {
     if (doc.exists) {
         console.log("Watchlist exists for the user. Do Nothing");
     } else {
-        // doc.data() will be undefined in this case
-        // console.log("No such document!");
         console.log("creating new watchlist for the user ", userId)
     watchlistsRef.set({'watchlists':[default_watchlist]})
         .then(function() {
@@ -131,8 +131,8 @@ function creatDefaultWatchList(){
 }
 
 function addToWatchList() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('user');
+
+  var userId = firebase.auth().currentUser.uid;
   console.log("Adding new document to watchlist for user", userId)
   
 
@@ -175,6 +175,7 @@ function addToWatchList() {
 function getAllWatchLists(){
   const urlParams = new URLSearchParams(window.location.search);
   const userId = urlParams.get('user');
+  // var userId = firebase.auth().currentUser.uid;
   console.log("Get all watchlists for the user ", userId)
   var watchlistRef = db.collection("watchlists").doc(userId);
   var watchlistsData = []
@@ -183,13 +184,9 @@ function getAllWatchLists(){
         watchlistsData = doc.data()['watchlists'];
         populatewatchlists(watchlistsData)
     } else {
-        // doc.data() will be undefined in this case
         console.log("No watchlists for the user");
     }
 })
-// .catch(function(error) {
-//     console.log("Error getting document:", error);
-// });
 console.log("Returning watchlist data ", watchlistsData)
 return watchlistsData
 }
@@ -209,12 +206,13 @@ function populatewatchlists(data){
         select.value= 'default'
 }
 
-function getWatchlistFromName(){
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('user');
-  var select = document.getElementById('watchlistDrops')
-  var name = select.options[select.selectedIndex].value
+function getWatchlistFromName(name, callback){
+  // const urlParams = new URLSearchParams(window.location.search);
+  // const userId = urlParams.get('user');
+  var user = firebase.auth().currentUser;
+  var userId = user.uid
   console.log("getting watchlist for name is ", name)
+  console.log("user is ", userId)
   
   var watchlistRef = db.collection("watchlists").doc(userId);
   var watchlistData = []
@@ -224,15 +222,14 @@ function getWatchlistFromName(){
         watchlistData = watchlistsArr.find(item => item.name===name)
         console.log("watchlist is ", watchlistData)
         console.log("Setting tickers")
-        var ticker = document.getElementById("watchlistStock")
-        ticker.value = watchlistData['stockId']
-        var country = document.getElementById("watchlistCountry")
-        country.value = watchlistData['country']
+        callback({stockId: watchlistData['stockId'], country: watchlistData['country']})
     } else {
         console.log("No watchlist for the user");
+        callback()
     }
 }).catch(function(error) {
     console.log("Error getting document:", error);
+    callback()
 });
 }
 
