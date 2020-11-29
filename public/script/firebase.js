@@ -178,7 +178,7 @@ function getAllWatchLists(){
   console.log("Get all watchlists for the user ", userId)
   var watchlistRef = db.collection("watchlists").doc(userId);
   var watchlistsData = []
-  watchlistRef.get().then(function(doc) {
+  watchlistRef.onSnapshot(function(doc) {
     if (doc.exists) {
         watchlistsData = doc.data()['watchlists'];
         populatewatchlists(watchlistsData)
@@ -186,15 +186,18 @@ function getAllWatchLists(){
         // doc.data() will be undefined in this case
         console.log("No watchlists for the user");
     }
-}).catch(function(error) {
-    console.log("Error getting document:", error);
-});
+})
+// .catch(function(error) {
+//     console.log("Error getting document:", error);
+// });
 console.log("Returning watchlist data ", watchlistsData)
 return watchlistsData
 }
 
 function populatewatchlists(data){
   var select = document.getElementById("watchlistDrops");
+  var oldoptions = document.querySelectorAll('#watchlistDrops option')
+  oldoptions.forEach(o=>o.remove());
   for(var i = 0; i < data.length; i++) {
             console.log(data[i])
             var opt = data[i].name;
