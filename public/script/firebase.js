@@ -207,3 +207,11 @@ function getWatchlistFromName(name, callback){
 });
 }
 
+function getUsername(){
+  firebase.auth().onAuthStateChanged(function(user) {
+    var email = user.email
+    document.getElementById("username").innerHTML=email; 
+  })
+  
+}
+
