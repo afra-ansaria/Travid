@@ -12,6 +12,10 @@ const FirebaseAPI = function(){
       
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    // <!-- ============================================================== -->
+    //                         <!-- User Authentication -->
+    //  <!-- ============================================================== -->
       
     function signUp(email, password) {
         if (!email){
@@ -66,7 +70,30 @@ const FirebaseAPI = function(){
               console.log(error);
           });
     }
+
+    function setUserName() {
+      const email = firebase.auth().currentUser.email;
+      const usernameElement = document.getElementById('username');
+      usernameElement.textContent = email;
+  }
+
+  return {
+      signUp,
+      login,
+      createDefaultWatchList,
+      getAllWatchLists,
+      getWatchlistFromName,
+      addToWatchList,
+      setUserName,
+      removeFromWatchlistByName
+  }
+}();
+
+    // <!-- ============================================================== -->
+    //                         <!-- User Watchlist -->
+    //  <!-- ============================================================== -->
       
+    //  <!-- =============================Create default Watchlists================================= -->
     function createDefaultWatchList(){
         console.log("Creating default watchlist")
         const default_watchlist = {
@@ -95,6 +122,8 @@ const FirebaseAPI = function(){
           console.log("Error getting document:", error);
         });
     }
+
+    //  <!-- =============================Add New Watchlists================================= -->
       
     function addToWatchList(name, country, ticker) {
         const userId = firebase.auth().currentUser.uid;
@@ -126,6 +155,8 @@ const FirebaseAPI = function(){
             console.error("Error adding document: ", error);
         });
     }
+
+    //  <!-- =============================Get All Watchlists================================= -->
       
     function getAllWatchLists(value){
         const userId = firebase.auth().currentUser.uid;
@@ -155,7 +186,8 @@ const FirebaseAPI = function(){
         }
         select.value = value || 'default';
     }
-      
+    //  <!-- =============================Get Watchlists================================= -->
+
     function getWatchlistFromName(name){
         const userId = firebase.auth().currentUser.uid;
         console.log("Getting watchlist with name ", name, " for user", userId);    
@@ -176,6 +208,8 @@ const FirebaseAPI = function(){
         });
     }
 
+    //  <!-- ==========================Remove Watchlist==================================== -->
+
     async function removeFromWatchlistByName(name) {
       const userId = firebase.auth().currentUser.uid;
       const watchlistRef = db.collection("watchlists").doc(userId);
@@ -193,20 +227,4 @@ const FirebaseAPI = function(){
       });
     }
 
-    function setUserName() {
-        const email = firebase.auth().currentUser.email;
-        const usernameElement = document.getElementById('username');
-        usernameElement.textContent = email;
-    }
 
-    return {
-        signUp,
-        login,
-        createDefaultWatchList,
-        getAllWatchLists,
-        getWatchlistFromName,
-        addToWatchList,
-        setUserName,
-        removeFromWatchlistByName
-    }
-}();
