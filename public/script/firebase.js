@@ -12,6 +12,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 
+// <================================================= Authentication ====================================>//
+
+
+
+// <========================= USER SIGNUP ==============================>//
 function create() {
   // var name     = document.getElementById('name').value
   var email    = document.getElementById('email').value
@@ -49,6 +54,8 @@ function create() {
 
 }
 
+// <========================= USER LOGIN ==============================>//
+
 function login() {
   var email    = document.getElementById('loginEmail').value;
   var password = document.getElementById('loginPassword').value;
@@ -80,6 +87,21 @@ function login() {
         console.log(error);
     });
 }
+// <========================= Get Username ==============================>//
+
+
+function getUsername(){
+  firebase.auth().onAuthStateChanged(function(user) {
+    var email = user.email
+    document.getElementById("username").innerHTML=email; 
+  })
+  
+}
+
+
+// <============================================== Watchlists ============================================>//
+
+//<===================== Default watchlists =========================>//
 
 function creatDefaultWatchList(){
   console.log("create default watchlist")
@@ -108,6 +130,10 @@ function creatDefaultWatchList(){
 });
   })
 }
+
+
+// <===================== Add new watchlists =========================>//
+
 
 function addToWatchList() {
 
@@ -149,6 +175,8 @@ function addToWatchList() {
 });
 }
 
+//<===================== Get All watchlists =========================>//
+
 function getAllWatchLists(){
   firebase.auth().onAuthStateChanged(function(user) {
   var userId = user.uid
@@ -182,6 +210,7 @@ function populatewatchlists(data){
         }
         select.value= 'default'
 }
+// <========================= Get single Watchlist ==============================>//
 
 function getWatchlistFromName(name, callback){
   var user = firebase.auth().currentUser;
@@ -207,11 +236,5 @@ function getWatchlistFromName(name, callback){
 });
 }
 
-function getUsername(){
-  firebase.auth().onAuthStateChanged(function(user) {
-    var email = user.email
-    document.getElementById("username").innerHTML=email; 
-  })
-  
-}
+
 
