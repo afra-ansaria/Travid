@@ -41,11 +41,11 @@ function showTables(){
     var table1 = document.getElementById("stockTable1");
     var table2 = document.getElementById("stockTable2");
     if (table1.style.display == "none") {
-        table1.style.display = "block";
+        table1.style.display = "table";
         table2.style.display = "none";
       } else {
         table1.style.display = "none";
-        table2.style.display = "block";
+        table2.style.display = "table";
       }
     }
 
