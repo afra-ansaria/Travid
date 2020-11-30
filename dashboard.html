@@ -287,12 +287,29 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="card">
-                                <table class="table" id="stockTable">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                    <button class="btn btn btn-info" type="button" onclick="showTables()">Up Trends</button>
+                                    <button class="btn btn-light" type="button" onclick="showTables()">Down Trend</button>
+                                </div>
+                                </div>
+                                <table class="table" id="stockTable1" style="display: block; width: 100%;">
+                                    <thead class="thead-light" style="width: 100%; text-align: center">
+                                      <tr>
+                                        <th scope="col">Logo</th>
+                                        <th scope="col">Company</th>
+                                        <th scope="col">Ticker</th>
+                                        <th scope="col">% change</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <table class="table" id="stockTable2" style="display: none;">
                                     <thead class="thead-light">
                                       <tr>
                                         <th scope="col">Logo</th>
                                         <th scope="col">Company</th>
-                                        <th scope="col">StockId</th>
+                                        <th scope="col">Ticker</th>
                                         <th scope="col">%change</th>
                                       </tr>
                                     </thead>
