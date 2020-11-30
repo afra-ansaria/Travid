@@ -3,6 +3,6 @@ $(document).ready(async function () {
     if (user) {
         window.location = 'dashboard.html';  
     } else {
-        EventListners.addAuthEventListeners();
+        EventListeners.addAuthEventListeners();
     }
 });

@@ -109,7 +109,7 @@ const FirebaseAPI = function(){
         }
         if (!name) {
           alert("Please enter the watch list name!");
-          return
+          return;
         }  
         const watchlistObject = {
           'country': country,
@@ -122,13 +122,12 @@ const FirebaseAPI = function(){
           watchlists: firebase.firestore.FieldValue.arrayUnion(watchlistObject)
         }).then(() => {
             alert("Watch list saved!");
-            FirebaseAPI.getAllWatchLists();
         }).catch(function(error) {
             console.error("Error adding document: ", error);
         });
     }
       
-    function getAllWatchLists(){
+    function getAllWatchLists(value){
         const userId = firebase.auth().currentUser.uid;
         console.log("Get all watchlists for the user ", userId)
         const watchlistRef = db.collection("watchlists").doc(userId);
@@ -136,25 +135,25 @@ const FirebaseAPI = function(){
         .get()
         .then((doc) => {
             if (doc.exists) {
-                populatewatchlists(doc.data()['watchlists']);
+                populateWatchLists(doc.data()['watchlists'], value);
             } else {
                 console.log("No watchlists for the user");
             }
         });
     }
 
-    function populatewatchlists(data){
+    function populateWatchLists(data, value){
         const select = document.getElementById("watchlistDrops");
         const oldoptions = document.querySelectorAll('#watchlistDrops option')
         oldoptions.forEach(o=>o.remove());
-        for(var i = 0; i < data.length; i++) {
+        for(let i = 0; i < data.length; i++) {
             const opt = data[i].name;
             const el = document.createElement("option");
             el.textContent = opt;
             el.value = opt;
             select.appendChild(el);
         }
-        select.value= 'default';
+        select.value = value || 'default';
     }
       
     function getWatchlistFromName(name){

@@ -6,7 +6,6 @@ const Charts = function(){
         const countryAlpha2 = countrySelection.value;
         const covidPastData = await COVIDAPI.getPastDataForCountry(countryAlpha2);
         const covidPredictedData = await COVIDAPI.getPredictedDataForCountry(countryAlpha2);
-
         const chart_data = new google.visualization.DataTable();
         chart_data.addColumn('string', 'Day');
         chart_data.addColumn('number', 'Confirmed Cases');
@@ -15,8 +14,6 @@ const Charts = function(){
         chart_data.addRows(covidPastData);
         chart_data.addRows([[covidPastData[covidPastData.length - 1][0],undefined, undefined, covidPastData[covidPastData.length - 1][1]]]);
         chart_data.addRows(covidPredictedData);
-       // chart_data.addRows([...covidPastData, ...covidPredictedData]);
-
         const options = {
             chart: {
                 title: `Total COVID-19 Cases, Deaths & Predictions for ${countrySelection.text}`,
@@ -38,22 +35,18 @@ const Charts = function(){
         const chart = new google.charts.Line(document.getElementById('chart_div'));
         chart.draw(chart_data, google.charts.Line.convertOptions(options));
     }
-    function drawCovidMap() {
+    async function drawCovidMap() {
         const chart = new google.visualization.GeoChart(document.getElementById('map_div'));
         chart.clearChart();
-        const countryDropdown = document.querySelector('#countryDrops');
-        const countrySelection = countryDropdown.options[countryDropdown.selectedIndex];
         const dataTable = [
-            ["Country"],
-            [countrySelection.text]
+            ["Country", "Cases"],
+            ...await COVIDAPI.getPastDataForAllCountries()
         ];
         const data = google.visualization.arrayToDataTable(dataTable);
         const options = {
             displayMode: 'region',
-            datalessRegionColor: 'white',
-            defaultColor: 'grey'
+            colorAxis: {colors: ['purple', '#C71585', 'red']}
         };
-       
         chart.draw(data, options);
         google.visualization.events.addListener(chart, 'regionClick', (event) => {
             const countryDropdown = document.querySelector('#countryDrops');

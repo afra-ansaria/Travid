@@ -7,9 +7,9 @@ $(document).ready(() => {
             Charts.drawStockChart();
             await CountryDropdown.populate();
             await Charts.drawCovidChart();
-            Charts.drawCovidMap();
+            await Charts.drawCovidMap();
             await NewsFeed.populateNewsFeed();
-            EventListners.addDashboardEventListeners();
+            EventListeners.addDashboardEventListeners();
         } else {
             window.location = './';
         }

@@ -1,4 +1,4 @@
-const EventListners = function(){
+const EventListeners = function(){
     return {
         addDashboardEventListeners: () => {
             const countrySelect = document.querySelector('#countryDrops');
@@ -7,7 +7,7 @@ const EventListners = function(){
             const watchlistDrops = document.querySelector("#watchlistDrops");
             const modalStockTicker = document.querySelector('#ticker');
             const modalCountryDrops = document.querySelector('#countryDrops2');
-            const saveWatchListButton = document.querySelector('#saveWatchList');
+            const saveWatchListButton = document.querySelector('#saveWatchListButton');
             window.addEventListener('resize', () => {
                 Charts.drawCovidChart();
                 Charts.drawCovidMap();
@@ -37,12 +37,14 @@ const EventListners = function(){
             stockSearchInput.addEventListener('change', (event) => {
                 modalStockTicker.value = event.target.value;
             });  
-            saveWatchListButton.addEventListener('click', () => {
+            saveWatchListButton.addEventListener('click', async () => {
                 const name = document.getElementById('watchlistName').value;
                 const ticker = modalStockTicker.value;
                 const country = modalCountryDrops.value;
-                FirebaseAPI.addToWatchList(name, country, ticker);
-            })
+                await FirebaseAPI.addToWatchList(name, country, ticker);
+                await FirebaseAPI.getAllWatchLists(name);
+                watchlistDrops.dispatchEvent(new Event('change'));
+            });
         },
         addAuthEventListeners: () => {
             const authToggleButton = document.querySelector('.img__btn');
