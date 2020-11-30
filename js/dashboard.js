@@ -1,6 +1,7 @@
 $(document).ready(() => {
+    let loaded = false;
     firebase.auth().onAuthStateChanged(async (user) => {
-        if (user) {
+        if (user && !loaded) {
             FirebaseAPI.setUserName();
             await FirebaseAPI.createDefaultWatchList();
             await FirebaseAPI.getAllWatchLists();
@@ -10,6 +11,7 @@ $(document).ready(() => {
             await Charts.drawCovidMap();
             await NewsFeed.populateNewsFeed();
             EventListeners.addDashboardEventListeners();
+            loaded = true;
         } else {
             window.location = './';
         }

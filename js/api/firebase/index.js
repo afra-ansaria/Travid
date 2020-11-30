@@ -131,7 +131,7 @@ const FirebaseAPI = function(){
         const userId = firebase.auth().currentUser.uid;
         console.log("Get all watchlists for the user ", userId)
         const watchlistRef = db.collection("watchlists").doc(userId);
-        watchlistRef
+        return watchlistRef
         .get()
         .then((doc) => {
             if (doc.exists) {
@@ -176,6 +176,23 @@ const FirebaseAPI = function(){
         });
     }
 
+    async function removeFromWatchlistByName(name) {
+      const userId = firebase.auth().currentUser.uid;
+      const watchlistRef = db.collection("watchlists").doc(userId);
+      return watchlistRef
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          const watchlist =  doc.data()['watchlists'];
+          const updatedWatchList = watchlist.filter(entry => entry.name !== name);
+          return watchlistRef.update({ watchlists: updatedWatchList });
+        } else {
+            console.log("No watchlists for the user");
+            return [];
+        }
+      });
+    }
+
     function setUserName() {
         const email = firebase.auth().currentUser.email;
         const usernameElement = document.getElementById('username');
@@ -189,6 +206,7 @@ const FirebaseAPI = function(){
         getAllWatchLists,
         getWatchlistFromName,
         addToWatchList,
-        setUserName
+        setUserName,
+        removeFromWatchlistByName
     }
 }();

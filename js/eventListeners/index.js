@@ -8,6 +8,8 @@ const EventListeners = function(){
             const modalStockTicker = document.querySelector('#ticker');
             const modalCountryDrops = document.querySelector('#countryDrops2');
             const saveWatchListButton = document.querySelector('#saveWatchListButton');
+            const logoutButton = document.querySelector('#logOutButton');
+            const removeFromWatchlistButton = document.querySelector('#removeFromWatchlist');
             window.addEventListener('resize', () => {
                 Charts.drawCovidChart();
                 Charts.drawCovidMap();
@@ -36,6 +38,9 @@ const EventListeners = function(){
             });
             stockSearchInput.addEventListener('change', (event) => {
                 modalStockTicker.value = event.target.value;
+            }); 
+            stockSearchInput.addEventListener('input', (event) => {
+                modalStockTicker.value = event.target.value;
             });  
             saveWatchListButton.addEventListener('click', async () => {
                 const name = document.getElementById('watchlistName').value;
@@ -45,6 +50,24 @@ const EventListeners = function(){
                 await FirebaseAPI.getAllWatchLists(name);
                 watchlistDrops.dispatchEvent(new Event('change'));
             });
+            logoutButton.addEventListener('click', async () => {
+                await firebase.auth().signOut();
+                window.location = './';
+            });
+            removeFromWatchlistButton.addEventListener('click', async () => {
+                const name = watchlistDrops.value;
+                if (name === 'default') {
+                    alert('You cannot remove the default watchlist!');
+                    return;
+                } else if (!name) {
+                    alert('Please select a watch list to remove');
+                    return;
+                }
+                await FirebaseAPI.removeFromWatchlistByName(name);
+                alert(`Removed ${name} from watchlist!`);
+                await FirebaseAPI.getAllWatchLists();
+                watchlistDrops.dispatchEvent(new Event('change'));
+            })
         },
         addAuthEventListeners: () => {
             const authToggleButton = document.querySelector('.img__btn');
