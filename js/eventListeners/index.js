@@ -1,10 +1,10 @@
 const EventListners = function(){
-    const countrySelect = document.querySelector('#countryDrops');
-    const stockSearchButton = document.querySelector("#stock_search_button");
-    const stockSearchInput = document.querySelector("#stock_search_input");
-    const watchlistDrops = document.querySelector("#watchlistDrops");
     return {
-        addListeners: () => {
+        addDashboardEventListeners: () => {
+            const countrySelect = document.querySelector('#countryDrops');
+            const stockSearchButton = document.querySelector("#stock_search_button");
+            const stockSearchInput = document.querySelector("#stock_search_input");
+            const watchlistDrops = document.querySelector("#watchlistDrops");
             window.addEventListener('resize', () => {
                 Charts.drawCovidChart();
                 Charts.drawCovidMap();
@@ -23,7 +23,7 @@ const EventListners = function(){
                 }
             });
             watchlistDrops.addEventListener('change', (event) => {
-                var name = event.target.value
+                const name = event.target.value
                 getWatchlistFromName(name, ({stockId, country})=>{
                     stockSearchInput.value = stockId;
                     stockSearchButton.dispatchEvent(new Event('click'));
@@ -33,6 +33,24 @@ const EventListners = function(){
 
             });
             
+        },
+        addAuthEventListeners: () => {
+            const authToggleButton = document.querySelector('.img__btn');
+            const signUpButton = document.querySelector('#signupButton');
+            const loginButton = document.querySelector('#loginButton');
+            authToggleButton.addEventListener('click', () => {
+                document.querySelector('.cont').classList.toggle('s--signup');
+            });
+            signUpButton.addEventListener('click', () => {
+                const email = document.getElementById('signUpEmail').value;
+                const password = document.getElementById('signUpPassword').value;
+                FirebaseAPI.signUp(email, password);
+            });
+            loginButton.addEventListener('click', () => {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                FirebaseAPI.login(email, password);
+            });
         }
     }
 }();

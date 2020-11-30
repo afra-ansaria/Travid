@@ -12,7 +12,7 @@ const NewsFeed = function() {
         newsFeedTitle.textContent = `Relevant News For ${country}`;
 
     }
-    function addToNewsFeed({ author, link, media, published_date, summary, title }) {
+    function addToNewsFeed({ author, link, media, published_date, title }) {
         const newsFeed = document.querySelector('#news-feed');
         const template = document.querySelector('#news-feed-template');
         const newsFeedElement = template.content.cloneNode(true);
@@ -20,12 +20,10 @@ const NewsFeed = function() {
         const newsFeedElementLink = newsFeedElement.querySelector('#news-link');
         const newsFeedElementTitle = newsFeedElement.querySelector('#news-title');
         const newsFeedElementMeta = newsFeedElement.querySelector('#news-meta');
-        // const newsFeedElementSummary = newsFeedElement.querySelector('#news-summary');
         newsFeedElementImage.src = media || "plugins/images/travidlogo.png";
         newsFeedElementLink.href = link;
         newsFeedElementTitle.textContent = title;
-        newsFeedElementMeta.textContent = [author, moment(published_date).format(' Do MMMM, YYYY')].filter(meta => meta).join('|');
-        // newsFeedElementSummary.textContent = summary;
+        newsFeedElementMeta.textContent = [author, moment(published_date).format(' Do MMMM, YYYY')].filter(meta => meta).join(' | ');
         newsFeed.appendChild(newsFeedElement);
     }
     function clearNewsFeed() {

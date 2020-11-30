@@ -89,9 +89,7 @@ const Charts = function(){
     google.charts.load('current', {
         'packages': ['corechart', 'line', 'geochart'],
         'mapsApiKey': 'AIzaSyBPjqMqmYf8a_BmuufiYYl63rIv2obqSV0'
-      });
-    google.charts.setOnLoadCallback(drawCovidChart);
-    google.charts.setOnLoadCallback(drawCovidMap);
+    });
     return {
         drawCovidChart,
         drawCovidMap,
