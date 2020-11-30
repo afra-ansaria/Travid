@@ -1,7 +1,6 @@
 const CountryDropdown = function(){
     return {
         populate: async () => {
-            console.log("dropdown")
             var select1 = document.getElementById("countryDrops");
             var select2 = document.getElementById("countryDrops2");
             const countryData = await COVIDAPI.getSupportedCountries();
