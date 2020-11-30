@@ -108,7 +108,7 @@ function creatDefaultWatchList(){
   var default_watchlist = {
     'name': 'default',
     'country': 'US',
-    'stockId': 'GOOG'
+    'stockId': 'SPY'
   }
   firebase.auth().onAuthStateChanged(function(user) {
   var userId = user.uid;
