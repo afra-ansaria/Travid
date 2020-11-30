@@ -28,7 +28,10 @@ const COVIDAPI = function(){
         getPastDataForCountry: (alpha2Code) => {
             return RESTService
             .get(`https://covid19-api.org/api/timeline/${alpha2Code}`)
-            .then(data => {
+            .then((data) => {
+                if (data.error) {
+                    return [];
+                }
                 return data
                 .map(formatPastData)
                 .reverse();
@@ -37,7 +40,10 @@ const COVIDAPI = function(){
         getPredictedDataForCountry: (alpha2Code) => {
             return RESTService
                 .get(`https://covid19-api.org/api/prediction/${alpha2Code}`)
-                .then(data => {
+                .then((data) => {
+                    if (data.error) {
+                        return [];
+                    }
                     return data
                     .map(formatPredictedData);
                 });
@@ -46,13 +52,19 @@ const COVIDAPI = function(){
             return RESTService
             .get('https://covid19-api.org/api/countries')
             .then(data => {
+                if (data.error) {
+                    return [];
+                }
                 return data.map(formatCountriesData)
             });
         },
         getPastDataForAllCountries: () => {
             return RESTService
             .get(`https://covid19-api.org/api/status`)
-            .then(data => {
+            .then((data) => {
+                if (data.error) {
+                    return [];
+                }
                 return data
                 .map(entry => {
                     return [
@@ -60,7 +72,7 @@ const COVIDAPI = function(){
                         entry.cases
                     ]
                 })
-            });
+            })
         }
     }
 }()

@@ -38,9 +38,16 @@ const Charts = function(){
     async function drawCovidMap() {
         const chart = new google.visualization.GeoChart(document.getElementById('map_div'));
         chart.clearChart();
+        const dataByCountry = (await COVIDAPI.getPastDataForAllCountries()).map(entry => {
+            const [alpha, cases ] = entry;
+            return [
+                document.querySelector(`#countryDrops option[value=${alpha}]`).text || alpha,
+                cases
+            ]
+        });
         const dataTable = [
             ["Country", "Cases"],
-            ...await COVIDAPI.getPastDataForAllCountries()
+            ...dataByCountry
         ];
         const data = google.visualization.arrayToDataTable(dataTable);
         const options = {
