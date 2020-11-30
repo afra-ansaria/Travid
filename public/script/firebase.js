@@ -31,24 +31,11 @@ function create() {
   firebase.auth()
   .createUserWithEmailAndPassword(email, password)
   .then(user => {
-        console.log("Create Success")
-        console.log(user)
+        console.log("Create Success for id: ")
         console.log(user.user.uid)
         const userid = user.user.uid
-        // alert("Create Success");
-
-      //   db.collection("watchlists").doc(String(userId)).set({'watchlists':[default_watchlist]})
-      //   .then(function() {
-      //     console.log("Default Watchlist successfully created!");
-      //   }).catch(function(error) {
-      //     console.error("Error writing document: ", error);
-      // })
-
-        window.location ='dashboard.html'+ '?'+'user='+userid
-        console.log(user.user.uid)
-        // create.innerHTML = "Create Success"
+        window.location ='dashboard.html'
       }).catch(function(error) {
-      // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       if (errorCode == 'auth/weak-password') {
@@ -59,7 +46,6 @@ function create() {
         console.log(error);
     });
    
-  // creatDefaultWatchList()
 
 }
 
@@ -77,13 +63,9 @@ function login() {
   }
   firebase.auth().signInWithEmailAndPassword(email, password)
   .then(user => {
-      console.log("Login Success")
-        console.log(user)
+      console.log("Login Success for user: ")
         console.log(user.user.uid)
-        var userid = user.user.uid
-        window.location ='dashboard.html'+ '?'+'user='+userid
-        console.log(user)
-        console.log(user.user.uid)
+        window.location ='dashboard.html'
         // login.innerHTML = "Login Success"
       })
   .catch(function(error) {
@@ -104,12 +86,10 @@ function creatDefaultWatchList(){
   var default_watchlist = {
     'name': 'default',
     'country': 'US',
-    'stockId': 'GOOG',
-    'country_alpha': 'US'
+    'stockId': 'GOOG'
   }
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('user');
-  // var userId = firebase.auth().currentUser.uid;
+  firebase.auth().onAuthStateChanged(function(user) {
+  var userId = user.uid;
   var watchlistsRef = db.collection("watchlists").doc(String(userId))
   watchlistsRef.get().then(function(doc) {
     if (doc.exists) {
@@ -126,8 +106,7 @@ function creatDefaultWatchList(){
 }).catch(function(error) {
     console.log("Error getting document:", error);
 });
-
-  
+  })
 }
 
 function addToWatchList() {
@@ -158,7 +137,6 @@ function addToWatchList() {
     'name': watchlistName
   }
   var watchlistRef = db.collection("watchlists").doc(userId);
-  console.log("watchlist is ", watchlistRef)
   watchlistRef.update({
     watchlists: firebase.firestore.FieldValue.arrayUnion(watchlistObject)
 })
@@ -172,9 +150,8 @@ function addToWatchList() {
 }
 
 function getAllWatchLists(){
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('user');
-  // var userId = firebase.auth().currentUser.uid;
+  firebase.auth().onAuthStateChanged(function(user) {
+  var userId = user.uid
   console.log("Get all watchlists for the user ", userId)
   var watchlistRef = db.collection("watchlists").doc(userId);
   var watchlistsData = []
@@ -188,6 +165,7 @@ function getAllWatchLists(){
 })
 console.log("Returning watchlist data ", watchlistsData)
 return watchlistsData
+})
 }
 
 function populatewatchlists(data){
@@ -206,8 +184,6 @@ function populatewatchlists(data){
 }
 
 function getWatchlistFromName(name, callback){
-  // const urlParams = new URLSearchParams(window.location.search);
-  // const userId = urlParams.get('user');
   var user = firebase.auth().currentUser;
   var userId = user.uid
   console.log("getting watchlist for name is ", name)
@@ -219,7 +195,6 @@ function getWatchlistFromName(name, callback){
     if (doc.exists) {
         watchlistsArr = doc.data()['watchlists'];
         watchlistData = watchlistsArr.find(item => item.name===name)
-        console.log("watchlist is ", watchlistData)
         console.log("Setting tickers")
         callback({stockId: watchlistData['stockId'], country: watchlistData['country']})
     } else {
