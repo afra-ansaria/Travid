@@ -11,6 +11,7 @@ function populateTables(){
     {
         // create a new row
         var newRow = table.insertRow(table.length);
+        table.setAttribute("width", "100%")
         for(var j = 0; j < pos_stock_arr[i].length; j++)
         {
             // create a new cell
@@ -22,6 +23,10 @@ function populateTables(){
                 img.setAttribute("height", "30");
                 img.setAttribute("width", "50")
                 cell.appendChild(img)
+                continue;
+            }
+            if(j===3){
+                cell.innerHTML = "<span style='color: green;'>" + pos_stock_arr[i][j]+"</span>";
                 continue;
             }
             
@@ -46,11 +51,11 @@ function showTables(){
 
 function populateTables2(){
     console.log("Populate tables2")
-    var pos_stock_arr = [["images/stocks/boeing.png", "Boeing", "ZM", "-35.96%"],
-                        ["images/stocks/OIL.png","Oil States International",  "TRIL", "-71.77%"],
-                        ["images/stocks/AE.jpeg", "American Express Co", "NFLX", "-4.28%"],
-                        ["images/stocks/cc.png", "Coca-Cola Co", "NVDA", "-7.07% "],
-                        ["images/stocks/Pfizer.png", "Pfizer Inc.", "PTON", "-2.57%"]
+    var pos_stock_arr = [["images/stocks/boeing.png", "Boeing", "BA", "-35.96%"],
+                        ["images/stocks/OIL.png","Oil States International",  "OIS", "-71.77%"],
+                        ["images/stocks/AE.jpeg", "American Express Co", "AXP", "-4.28%"],
+                        ["images/stocks/cc.png", "Coca-Cola Co", "KO", "-7.07% "],
+                        ["images/stocks/Pfizer.png", "Pfizer Inc.", "PFE", "-2.57%"]
                 ]
     var table = document.getElementById("stockTable2");
     for(var i = 0; i < pos_stock_arr.length; i++)
@@ -68,6 +73,10 @@ function populateTables2(){
                 img.setAttribute("height", "30");
                 img.setAttribute("width", "50")
                 cell.appendChild(img)
+                continue;
+            }
+            if(j===3){
+                cell.innerHTML = "<span style='color: red;'>" + pos_stock_arr[i][j]+"</span>";
                 continue;
             }
             

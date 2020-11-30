@@ -293,8 +293,8 @@
                                     <button class="btn btn-light" type="button" onclick="showTables()">Down Trend</button>
                                 </div>
                                 </div>
-                                <table class="table" id="stockTable1" style="display: block; width: 100%;">
-                                    <thead class="thead-light" style="width: 100%; text-align: center">
+                                <table class="table" id="stockTable1" style="display: block; table-layout: fixed">
+                                    <thead class="thead-light" >
                                       <tr>
                                         <th scope="col">Logo</th>
                                         <th scope="col">Company</th>
@@ -302,7 +302,6 @@
                                         <th scope="col">% change</th>
                                       </tr>
                                     </thead>
-                                    <tbody></tbody>
                                 </table>
                                 <table class="table" id="stockTable2" style="display: none;">
                                     <thead class="thead-light">
@@ -310,10 +309,9 @@
                                         <th scope="col">Logo</th>
                                         <th scope="col">Company</th>
                                         <th scope="col">Ticker</th>
-                                        <th scope="col">%change</th>
+                                        <th scope="col">% change</th>
                                       </tr>
                                     </thead>
-                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
