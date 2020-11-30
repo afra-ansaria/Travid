@@ -96,12 +96,9 @@ const FirebaseAPI = function(){
         });
     }
       
-    function addToWatchList() {
+    function addToWatchList(name, country, ticker) {
         const userId = firebase.auth().currentUser.uid;
-        console.log("Adding new document to watchlist for user", userId)
-        const country    = document.getElementById('countryDrops').value
-        const ticker = document.getElementById('ticker').value;
-        const watchlistName = document.getElementById('watchlistName').value;
+        console.log("Adding new document to watchlist for user", userId);
         if (!country) {
           alert("Please enter the country!");
           return;
@@ -110,21 +107,22 @@ const FirebaseAPI = function(){
           alert("Please enter the ticker!");
           return;
         }
-        if (!watchlistName) {
+        if (!name) {
           alert("Please enter the watch list name!");
           return
         }  
         const watchlistObject = {
           'country': country,
           'stockId': ticker,
-          'name': watchlistName
+          'name': name
         }
         const watchlistRef = db.collection("watchlists").doc(userId);
         return watchlistRef
         .update({
           watchlists: firebase.firestore.FieldValue.arrayUnion(watchlistObject)
         }).then(() => {
-            alert("Watch list saved!")
+            alert("Watch list saved!");
+            FirebaseAPI.getAllWatchLists();
         }).catch(function(error) {
             console.error("Error adding document: ", error);
         });
@@ -159,26 +157,30 @@ const FirebaseAPI = function(){
         select.value= 'default';
     }
       
-    function getWatchlistFromName(name, callback){
-        const userId = firebase.auth().currentUser.uid
+    function getWatchlistFromName(name){
+        const userId = firebase.auth().currentUser.uid;
         console.log("Getting watchlist with name ", name, " for user", userId);    
         const watchlistRef = db.collection("watchlists").doc(userId);
-        const watchlistData = [];
-        watchlistRef.get().then((doc) => {
+        return watchlistRef
+        .get()
+        .then((doc) => {
           if (doc.exists) {
-              watchlistsArr = doc.data()['watchlists'];
-              watchlistData = watchlistsArr.find(item => item.name===name)
-              console.log("watchlist is ", watchlistData)
-              console.log("Setting tickers")
-              callback({stockId: watchlistData['stockId'], country: watchlistData['country']})
+            const watchlistsArr = doc.data()['watchlists'];
+            const watchlistData = watchlistsArr.find(item => item.name===name);
+            console.log("Watchlist is ", watchlistData)
+            return watchlistData;
           } else {
-              console.log("No watchlist for the user");
-              callback()
+            console.log("No watchlist for the user");
           }
         }).catch(function(error) {
             console.log("Error getting document:", error);
-            callback()
         });
+    }
+
+    function setUserName() {
+        const email = firebase.auth().currentUser.email;
+        const usernameElement = document.getElementById('username');
+        usernameElement.textContent = email;
     }
 
     return {
@@ -187,6 +189,7 @@ const FirebaseAPI = function(){
         createDefaultWatchList,
         getAllWatchLists,
         getWatchlistFromName,
-        addToWatchList
+        addToWatchList,
+        setUserName
     }
 }();

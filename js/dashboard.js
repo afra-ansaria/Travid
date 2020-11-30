@@ -1,6 +1,7 @@
 $(document).ready(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
         if (user) {
+            FirebaseAPI.setUserName();
             await FirebaseAPI.createDefaultWatchList();
             await FirebaseAPI.getAllWatchLists();
             Charts.drawStockChart();

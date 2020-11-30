@@ -83,7 +83,7 @@
                             <li>
                                 <a class="profile-pic" href="#">
                                     <img src="plugins/images/travid_avatar.png" alt="user-img" width="36"
-                                        class="img-circle"><span class="text-white font-medium">Username</span></a>
+                                        class="img-circle"><span id="username" class="text-white font-medium">Loading...</span></a>
                             </li>
                             <!-- ============================================================== -->
                             <!-- User profile and search -->
@@ -150,7 +150,7 @@
                                                         <br>
                                                         <label>
                                                         <span class="col-form-label">Ticker   </span>
-                                                        <input type="text" id="ticker" class="form-control" required/>
+                                                        <input type="text" id="ticker" class="form-control" required value="SPY"/>
                                                         </label>
                                                         <br>
                                                         <label>
@@ -166,7 +166,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" onclick="addToWatchList()" data-dismiss="modal">Save changes</button>
+                                                <button id='saveWatchList' type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
                                                 </div>
                                             </div>
                                           </div>

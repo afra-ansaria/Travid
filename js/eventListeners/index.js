@@ -5,11 +5,15 @@ const EventListners = function(){
             const stockSearchButton = document.querySelector("#stock_search_button");
             const stockSearchInput = document.querySelector("#stock_search_input");
             const watchlistDrops = document.querySelector("#watchlistDrops");
+            const modalStockTicker = document.querySelector('#ticker');
+            const modalCountryDrops = document.querySelector('#countryDrops2');
+            const saveWatchListButton = document.querySelector('#saveWatchList');
             window.addEventListener('resize', () => {
                 Charts.drawCovidChart();
                 Charts.drawCovidMap();
             });
-            countrySelect.addEventListener('change', async () => {
+            countrySelect.addEventListener('change', async (event) => {
+                modalCountryDrops.value = event.target.value;
                 Charts.drawCovidMap();
                 await Charts.drawCovidChart();
                 await NewsFeed.populateNewsFeed(); 
@@ -22,17 +26,23 @@ const EventListners = function(){
                     Charts.drawStockChart();
                 }
             });
-            watchlistDrops.addEventListener('change', (event) => {
+            watchlistDrops.addEventListener('change', async (event) => {
                 const name = event.target.value
-                getWatchlistFromName(name, ({stockId, country})=>{
-                    stockSearchInput.value = stockId;
-                    stockSearchButton.dispatchEvent(new Event('click'));
-                    countrySelect.value = country;
-                    countrySelect.dispatchEvent(new Event('change')); 
-                })
-
+                const { stockId, country } = await FirebaseAPI.getWatchlistFromName(name);
+                stockSearchInput.value = stockId;
+                stockSearchButton.dispatchEvent(new Event('click'));
+                countrySelect.value = country;
+                countrySelect.dispatchEvent(new Event('change')); 
             });
-            
+            stockSearchInput.addEventListener('change', (event) => {
+                modalStockTicker.value = event.target.value;
+            });  
+            saveWatchListButton.addEventListener('click', () => {
+                const name = document.getElementById('watchlistName').value;
+                const ticker = modalStockTicker.value;
+                const country = modalCountryDrops.value;
+                FirebaseAPI.addToWatchList(name, country, ticker);
+            })
         },
         addAuthEventListeners: () => {
             const authToggleButton = document.querySelector('.img__btn');
