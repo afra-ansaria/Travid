@@ -26,6 +26,7 @@
         <script>
             window.onload = creatDefaultWatchList()
             window.onload = getAllWatchLists()
+            window.onload = getUsername()
         </script>
     </head>
     <body > 
@@ -92,7 +93,7 @@ wrapper - style you can find in pages.scss -->
                             <li>
                                 <a class="profile-pic" href="#">
                                     <img src="plugins/images/travid_avatar.png" alt="user-img" width="36"
-                                        class="img-circle"><span class="text-white font-medium">Tochi</span></a>
+                                        class="img-circle"><span id="username" class="text-white font-medium">Tochi</span></a>
                             </li>
                             <!-- ============================================================== -->
                             <!-- User profile and search -->
@@ -159,7 +160,7 @@ wrapper - style you can find in pages.scss -->
                                                         <br>
                                                         <label>
                                                         <span class="col-form-label">Ticker   </span>
-                                                        <input type="text" id="ticker" class="form-control" required/>
+                                                        <input type="text" id="ticker" class="form-control" required value="SPY"/>
                                                         </label>
                                                         <br>
                                                         <label>

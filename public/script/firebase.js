@@ -12,6 +12,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 
+// <================================================= Authentication ====================================>//
+
+
+
+// <========================= USER SIGNUP ==============================>//
 function create() {
   // var name     = document.getElementById('name').value
   var email    = document.getElementById('email').value
@@ -31,24 +36,11 @@ function create() {
   firebase.auth()
   .createUserWithEmailAndPassword(email, password)
   .then(user => {
-        console.log("Create Success")
-        console.log(user)
+        console.log("Create Success for id: ")
         console.log(user.user.uid)
         const userid = user.user.uid
-        // alert("Create Success");
-
-      //   db.collection("watchlists").doc(String(userId)).set({'watchlists':[default_watchlist]})
-      //   .then(function() {
-      //     console.log("Default Watchlist successfully created!");
-      //   }).catch(function(error) {
-      //     console.error("Error writing document: ", error);
-      // })
-
-        window.location ='dashboard.html'+ '?'+'user='+userid
-        console.log(user.user.uid)
-        // create.innerHTML = "Create Success"
+        window.location ='dashboard.html'
       }).catch(function(error) {
-      // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       if (errorCode == 'auth/weak-password') {
@@ -59,9 +51,10 @@ function create() {
         console.log(error);
     });
    
-  // creatDefaultWatchList()
 
 }
+
+// <========================= USER LOGIN ==============================>//
 
 function login() {
   var email    = document.getElementById('loginEmail').value;
@@ -77,13 +70,9 @@ function login() {
   }
   firebase.auth().signInWithEmailAndPassword(email, password)
   .then(user => {
-      console.log("Login Success")
-        console.log(user)
+      console.log("Login Success for user: ")
         console.log(user.user.uid)
-        var userid = user.user.uid
-        window.location ='dashboard.html'+ '?'+'user='+userid
-        console.log(user)
-        console.log(user.user.uid)
+        window.location ='dashboard.html'
         // login.innerHTML = "Login Success"
       })
   .catch(function(error) {
@@ -98,18 +87,31 @@ function login() {
         console.log(error);
     });
 }
+// <========================= Get Username ==============================>//
+
+
+function getUsername(){
+  firebase.auth().onAuthStateChanged(function(user) {
+    var email = user.email
+    document.getElementById("username").innerHTML=email; 
+  })
+  
+}
+
+
+// <============================================== Watchlists ============================================>//
+
+//<===================== Default watchlists =========================>//
 
 function creatDefaultWatchList(){
   console.log("create default watchlist")
   var default_watchlist = {
     'name': 'default',
     'country': 'US',
-    'stockId': 'GOOG',
-    'country_alpha': 'US'
+    'stockId': 'SPY'
   }
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('user');
-  // var userId = firebase.auth().currentUser.uid;
+  firebase.auth().onAuthStateChanged(function(user) {
+  var userId = user.uid;
   var watchlistsRef = db.collection("watchlists").doc(String(userId))
   watchlistsRef.get().then(function(doc) {
     if (doc.exists) {
@@ -126,17 +128,19 @@ function creatDefaultWatchList(){
 }).catch(function(error) {
     console.log("Error getting document:", error);
 });
-
-  
+  })
 }
+
+
+// <===================== Add new watchlists =========================>//
+
 
 function addToWatchList() {
 
   var userId = firebase.auth().currentUser.uid;
   console.log("Adding new document to watchlist for user", userId)
   
-
-  var country    = document.getElementById('countryDrops').value
+  var country    = document.getElementById('countryDrops2').value
   var ticker = document.getElementById('ticker').value 
   var watchlistName = document.getElementById('watchlistName').value 
 
@@ -159,7 +163,6 @@ function addToWatchList() {
     'name': watchlistName
   }
   var watchlistRef = db.collection("watchlists").doc(userId);
-  console.log("watchlist is ", watchlistRef)
   watchlistRef.update({
     watchlists: firebase.firestore.FieldValue.arrayUnion(watchlistObject)
 })
@@ -172,10 +175,11 @@ function addToWatchList() {
 });
 }
 
+//<===================== Get All watchlists =========================>//
+
 function getAllWatchLists(){
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('user');
-  // var userId = firebase.auth().currentUser.uid;
+  firebase.auth().onAuthStateChanged(function(user) {
+  var userId = user.uid
   console.log("Get all watchlists for the user ", userId)
   var watchlistRef = db.collection("watchlists").doc(userId);
   var watchlistsData = []
@@ -189,6 +193,7 @@ function getAllWatchLists(){
 })
 console.log("Returning watchlist data ", watchlistsData)
 return watchlistsData
+})
 }
 
 function populatewatchlists(data){
@@ -205,10 +210,9 @@ function populatewatchlists(data){
         }
         select.value= 'default'
 }
+// <========================= Get single Watchlist ==============================>//
 
 function getWatchlistFromName(name, callback){
-  // const urlParams = new URLSearchParams(window.location.search);
-  // const userId = urlParams.get('user');
   var user = firebase.auth().currentUser;
   var userId = user.uid
   console.log("getting watchlist for name is ", name)
@@ -220,7 +224,6 @@ function getWatchlistFromName(name, callback){
     if (doc.exists) {
         watchlistsArr = doc.data()['watchlists'];
         watchlistData = watchlistsArr.find(item => item.name===name)
-        console.log("watchlist is ", watchlistData)
         console.log("Setting tickers")
         callback({stockId: watchlistData['stockId'], country: watchlistData['country']})
     } else {
@@ -232,4 +235,6 @@ function getWatchlistFromName(name, callback){
     callback()
 });
 }
+
+
 
